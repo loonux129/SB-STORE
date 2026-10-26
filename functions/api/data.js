@@ -21,9 +21,9 @@ export async function onRequestGet(context) {
     "SELECT payload FROM app_data WHERE owner_email = ?",
   ).bind(email).first();
 
-  if (!row) return json(EMPTY_DATA);
+  if (!row) return json({ ...EMPTY_DATA, ownerEmail: email });
   try {
-    return json(JSON.parse(row.payload));
+    return json({ ...JSON.parse(row.payload), ownerEmail: email });
   } catch {
     return json({ error: "Données enregistrées invalides." }, 500);
   }
